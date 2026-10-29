@@ -30,10 +30,42 @@ const root = resolve(import.meta.dirname, "..");
 const work = mkdtempSync(join(tmpdir(), "check-upgrade-"));
 const sh = (cmd, args) => execFileSync(cmd, args, { cwd: root, encoding: "utf8" }).trim();
 
+// Reads a custom section straight from the binary: Node's own
+// `WebAssembly.Module` rejects modules that use Wasm features newer than
+// its engine (moc's output does), and a section lookup needs no compiler.
+function customSections(wasm) {
+  const bytes = wasm instanceof Uint8Array ? wasm : new Uint8Array(wasm);
+  let pos = 8; // magic + version
+  const leb = () => {
+    let result = 0;
+    let shift = 0;
+    for (;;) {
+      const byte = bytes[pos++];
+      result |= (byte & 0x7f) << shift;
+      if ((byte & 0x80) === 0) return result >>> 0;
+      shift += 7;
+    }
+  };
+  const out = new Map();
+  while (pos < bytes.length) {
+    const id = bytes[pos++];
+    const size = leb();
+    const end = pos + size;
+    if (id === 0) {
+      const nameLen = leb();
+      const name = new TextDecoder().decode(bytes.subarray(pos, pos + nameLen));
+      pos += nameLen;
+      out.set(name, bytes.subarray(pos, end));
+    }
+    pos = end;
+  }
+  return out;
+}
+
 function section(wasm, name) {
-  const mod = new WebAssembly.Module(wasm);
+  const sections = customSections(wasm);
   for (const vis of ["public", "private"]) {
-    const [s] = WebAssembly.Module.customSections(mod, `icp:${vis} ${name}`);
+    const s = sections.get(`icp:${vis} ${name}`);
     if (s) return new TextDecoder().decode(s);
   }
   return null;
