@@ -11,6 +11,11 @@ canisters:
         - type: script
           commands:
             - sh publish_wasm.sh backend
+  - name: bot
+    recipe:
+      type: "@dfinity/motoko@v4.1.0"
+      configuration:
+        main: bot/Bot.mo
   - name: frontend
     recipe:
       type: "@dfinity/static-site@v0.4.0"

@@ -732,3 +732,89 @@ button.dab-hit.duel-loading::after {
     stroke-dashoffset: 0;
   }
 }
+
+/* ── 🏆 leaderboard and 🤖 bots: full-page sheets over the game ─────── */
+
+#leaderboard-toggle {
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  border-color: var(--line);
+  box-shadow: none;
+  margin-right: 0;
+}
+
+#leaderboard-panel,
+#bot-challenge-panel {
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(180deg, transparent 0, transparent 27px, var(--rule) 27px, var(--rule) 28px),
+    radial-gradient(1200px 600px at 50% -10%, rgba(255, 255, 255, 0.55), transparent 70%);
+  animation: dab-fade 0.3s ease-out both;
+}
+
+.leaderboard-header h2,
+.bot-challenge-header h2 {
+  margin: 0;
+}
+
+.leaderboard-row {
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: var(--sketch);
+  box-shadow: 2px 3px 0 var(--shadow);
+  font-size: 1.02rem;
+}
+
+.leaderboard-row:nth-child(even) {
+  border-radius: var(--sketch-2);
+}
+
+.leaderboard-row.you {
+  border-color: var(--ink);
+  background: linear-gradient(transparent 20%, rgba(255, 227, 106, 0.6) 20%, rgba(255, 227, 106, 0.6) 85%, transparent 85%), var(--panel);
+}
+
+.leaderboard-rank {
+  font-family: var(--title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.leaderboard-player {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+}
+
+.leaderboard-score {
+  font-family: var(--title);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--p1);
+}
+
+.leaderboard-you-badge {
+  font-family: var(--hand);
+  color: var(--ink);
+  background: var(--highlight);
+  border: 1.5px solid var(--ink);
+}
+
+.leaderboard-challenge,
+#bot-add-trigger {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: var(--highlight);
+  box-shadow: 2px 3px 0 var(--shadow);
+}
+
+#bot-add-trigger {
+  font-size: 1rem;
+  padding: 0.4rem 0.9rem;
+}
+
+.bot-challenge-body .table-row,
+.bot-challenge-body .seats {
+  margin-top: 0.5rem;
+}

@@ -8,11 +8,13 @@ import { Actor, HttpAgent } from "@icp-sdk/core/agent";
 import { safeGetCanisterEnv } from "@icp-sdk/core/agent/canister-env";
 import { makeIdlFactory } from "@research-ag/duel-game-core/idl.js";
 import { start } from "@research-ag/duel-game-core/app.js";
-// import { botPlayer, mountBotChallenge, mountLeaderboard } from "@research-ag/duel-game-core/bots.js"; // BOTS, LEADERBOARD
+import { botPlayer, mountBotChallenge, mountLeaderboard } from "@research-ag/duel-game-core/bots.js"; // BOTS, LEADERBOARD
 import { connectTransport } from "@research-ag/duel-game-core/transport.js";
 import { resolveAnonymousIdentity } from "@research-ag/duel-game-core/anon-identity.js";
 import { deriveHost } from "@research-ag/duel-game-core/ic-env.js";
+import { viewTagOf } from "@research-ag/duel-game-core/client.js";
 import { plugin } from "./dots-and-boxes-plugin.js";
+import { steadyScreen } from "./morph-screen.js";
 import { setSoundEnabled, soundEnabled, unlockAudio } from "./sounds.js";
 
 // Pencil sounds: unlocked by the first gesture, muted with the 🔊 button.
@@ -57,10 +59,15 @@ const actor = Actor.createActor(idlFactory, { agent, canisterId });
 
 const transport = connectTransport({ actor, gameIdlTypes: plugin.idlTypes });
 
-const client = start({ plugin, transport, session });
+// Redraws morph the existing screen instead of replacing it (no flicker,
+// no restarted animations); a change of screen kind still replaces it.
+let client = null;
+steadyScreen(document.getElementById("screen"), () => (client ? (viewTagOf(client.getState().status) ?? "connecting") : "connecting"));
+
+client = start({ plugin, transport, session });
 
 // BOTS: "Add Bot" on the waiting screen and the "🤖 Bots" dialog.
-// const bots = mountBotChallenge({ client, actor, plugin, play: botPlayer(agent, canisterId) });
+const bots = mountBotChallenge({ client, actor, plugin, play: botPlayer(agent, canisterId) });
 // LEADERBOARD: the 🏆 overlay, one line of the two.
-// mountLeaderboard({ actor, plugin, sid: session.sid, onChallenge: bots.pick }); // with BOTS
+mountLeaderboard({ actor, plugin, sid: session.sid, onChallenge: bots.pick }); // with BOTS
 // mountLeaderboard({ actor, plugin, sid: session.sid }); // without

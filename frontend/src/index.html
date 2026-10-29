@@ -24,16 +24,13 @@
       </div>
       <div class="session">
         <button id="sound-toggle" class="ghost dab-sound" title="Pencil sounds" aria-label="Toggle pencil sounds" aria-pressed="true">🔊</button>
-        <!-- LEADERBOARD:
         <button id="leaderboard-toggle" title="Leaderboard" aria-label="Leaderboard">🏆</button>
-        -->
         <span class="label">Session</span>
         <code id="sid">…</code>
         <button id="new-sid" title="Play as a different session">new</button>
       </div>
     </header>
 
-    <!-- LEADERBOARD:
     <div id="leaderboard-panel" hidden>
       <div class="leaderboard-header">
         <button id="leaderboard-back" class="ghost">← Back</button>
@@ -41,9 +38,7 @@
       </div>
       <div id="leaderboard-body" class="leaderboard-list"></div>
     </div>
-    -->
 
-    <!-- BOTS:
     <div id="bot-challenge-panel" hidden>
       <div class="bot-challenge-header">
         <button id="bot-challenge-back" class="ghost">← Back</button>
@@ -51,7 +46,6 @@
       </div>
       <div id="bot-challenge-body" class="bot-challenge-body"></div>
     </div>
-    -->
 
     <p id="error" class="error" hidden></p>
 
@@ -59,17 +53,16 @@
       <p class="muted">Sharpening pencils…</p>
     </main>
 
-    <!-- BOTS:
     <div id="bot-add-panel" hidden>
       <button id="bot-add-trigger" class="ghost">Add Bot 🤖 to the open seat</button>
     </div>
-    -->
 
     <footer>
       <p class="muted">
         Take turns drawing one line between two dots. Close the fourth side of
         a box and it is yours, and you draw again. Most boxes when the sheet
-        is full wins.
+        is full wins. No friend around? Add a bot to your table: Easy gives
+        boxes away, Hard does not.
       </p>
       <p class="muted">
         Your session id is per browser tab — open a second tab to play the
