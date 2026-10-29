@@ -40,7 +40,7 @@ body {
   color: var(--ink);
   background-color: var(--bg);
   background-image:
-    linear-gradient(90deg, transparent 0, transparent 3.25rem, var(--margin) 3.25rem, var(--margin) calc(3.25rem + 2px), transparent calc(3.25rem + 2px)),
+    linear-gradient(90deg, transparent 0, transparent 0.7rem, var(--margin) 0.7rem, var(--margin) calc(0.7rem + 2px), transparent calc(0.7rem + 2px)),
     repeating-linear-gradient(180deg, transparent 0, transparent 27px, var(--rule) 27px, var(--rule) 28px),
     radial-gradient(1200px 600px at 50% -10%, rgba(255, 255, 255, 0.55), transparent 70%);
   background-attachment: fixed;
