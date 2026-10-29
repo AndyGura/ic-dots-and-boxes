@@ -10,8 +10,8 @@ sounds (mute with the 🔊 button) and animated strokes.
 
 | Canister | Id              | Runs                                  |
 | -------- | --------------- | ------------------------------------- |
-| backend  | `__BACKEND_ID__`  | the game (`src/Host.mo`)             |
-| frontend | `__FRONTEND_ID__` | https://__FRONTEND_ID__.icp0.io/     |
+| backend  | `kozn2-waaaa-aaaau-ahhsq-cai`  | the game (`src/Host.mo`)             |
+| frontend | `kh2gg-aiaaa-aaaau-ahhta-cai` | https://kh2gg-aiaaa-aaaau-ahhta-cai.icp0.io/     |
 
 ## Layout
 
@@ -74,21 +74,23 @@ is blocked there).
 Everything on mainnet goes through hosty.live, in a deploy session the
 owner approves in the hosty.live web app (`hosty_request_deploy_session`).
 
-1. Test locally (above). Then `cd frontend && node check-upgrade.mjs __BACKEND_ID__`
+1. Test locally (above). Then `cd frontend && node check-upgrade.mjs kozn2-waaaa-aaaau-ahhsq-cai`
    must exit 0 (stable types and Candid compatible with the live module).
-2. Backend: `icp build backend`, then `hosty_prepare_wasm_upload` with
-   `canisterId: __BACKEND_ID__`, `wasmPath: .icp/cache/artifacts/backend`,
+2. Backend: `icp build backend` and `gzip -9 -k .icp/cache/artifacts/backend`
+   (the cloud session's proxy refuses the raw 540 KB upload; the gzipped
+   module installs identically), then `hosty_prepare_wasm_upload` with
+   `canisterId: kozn2-waaaa-aaaau-ahhsq-cai`, `wasmPath: .icp/cache/artifacts/backend.gz`,
    `mode: upgrade`, `snapshotBeforeUpgrade: true`; run the returned
-   `curl` from the project root; `hosty_wait_for_deployment`. The module
+   `curl` from the project root (absolute file paths are safest); `hosty_wait_for_deployment`. The module
    lands in hosty.live's module store by itself. Roll back with
    `hosty_restore_snapshot` if the upgrade breaks the state.
 3. Frontend: `cd frontend && npm run build && zip -r dist.zip dist -x "*.map"`,
-   then `hosty_prepare_zip_upload` with `canisterId: __FRONTEND_ID__`,
+   then `hosty_prepare_zip_upload` with `canisterId: kh2gg-aiaaa-aaaau-ahhta-cai`,
    `pureAssets: true`, `outputDir: dist` (the canister keeps
-   `PUBLIC_CANISTER_ID:backend = __BACKEND_ID__`); run the `curl` from
+   `PUBLIC_CANISTER_ID:backend = kozn2-waaaa-aaaau-ahhsq-cai`); run the `curl` from
    `frontend/`; `hosty_wait_for_deployment`.
-4. `cd frontend && node play-test.mjs __BACKEND_ID__ --ic`, then check
-   `https://__BACKEND_ID__.raw.icp0.io/semantics`.
+4. `cd frontend && node play-test.mjs kozn2-waaaa-aaaau-ahhsq-cai --ic`, then check
+   `https://kozn2-waaaa-aaaau-ahhsq-cai.raw.icp0.io/semantics`.
 
 A change to `View`, `Action`, `Options` or the rules updates `SEMANTICS`
 in `src/DotsAndBoxesRules.mo` in the same change. Bot support and a
