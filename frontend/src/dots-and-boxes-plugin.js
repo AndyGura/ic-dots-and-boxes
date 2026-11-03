@@ -193,6 +193,10 @@ function diffBoard(board) {
     board.boxes.forEach((b, i) => {
       if (b !== null && prev.boxes[i] === null) freshBoxes.push(i);
     });
+    // The view keeps no draw order, only the most recent line: animate it
+    // last so a burst of bot moves ends on the line that was drawn last.
+    const k = freshLines.indexOf(board.lastLine);
+    if (k >= 0) freshLines.push(...freshLines.splice(k, 1));
   }
   prev = { n: board.n, lines: board.lines.slice(), boxes: board.boxes.slice() };
   return { freshLines, freshBoxes, newGame };
